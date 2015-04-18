@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="chien2d3" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/chien2d3" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add library="SDL2" />
+					<Add library="SDL2_mixer" />
+					<Add library="SDL2_ttf" />
+					<Add library="SDL2_image" />
+					<Add library="SDL2_gfx" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/chien2d3" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Release/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="SDL2" />
+					<Add library="SLD2_mixer" />
+					<Add library="SDL2_ttf" />
+					<Add library="SDL2_image" />
+					<Add library="SDL2_mixer" />
+					<Add library="SDL2_gfx" />
+				</Linker>
+			</Target>
+		</Build>
+		<Unit filename="include/c2d3/chien2d.h" />
+		<Unit filename="include/c2d3/chienaudio.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="src/chien2d.cpp" />
+		<Unit filename="src/chienaudio.cpp" />
+		<Extensions>
+			<envvars />
+			<code_completion />
+			<lib_finder disable_auto="1" />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

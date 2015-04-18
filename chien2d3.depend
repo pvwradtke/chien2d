@@ -1,0 +1,27 @@
+# depslib dependency file v1.0
+1426396660 source:/home/paulo/Dropbox/programacao/chien2d3/main.cpp
+	<stdio.h>
+	<c2d3/chien2d.h>
+	<c2d3/chienaudio.h>
+
+1426313815 /home/paulo/Dropbox/programacao/chien2d3/include/c2d3/chien2d.h
+	<SDL2/SDL.h>
+	<SDL2/SDL_image.h>
+	<SDL2/SDL_mixer.h>
+	<SDL2/SDL_ttf.h>
+	<windows.h>
+
+1426314348 source:/home/paulo/Dropbox/programacao/chien2d3/src/chien2d.cpp
+	<math.h>
+	<assert.h>
+	<c2d3/chien2d.h>
+
+1426301699 source:/home/paulo/Dropbox/programacao/chien2d3/src/chienaudio.cpp
+	<stdio.h>
+	<string.h>
+	<c2d3/chien2d.h>
+	<c2d3/chienaudio.h>
+
+1423537883 /home/paulo/Dropbox/programacao/chien2d3/include/c2d3/chienaudio.h
+	<SDL2/SDL_mixer.h>
+
