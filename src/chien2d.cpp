@@ -34,9 +34,10 @@ void C2D_RemoveGamepadEvento(const unsigned int id);
 
 // indica se a Chien2D 2 já foi inicializada. Por default, não foi ainda.
 bool inicializado = false;
-// A tela principal (dividida na tela física, Window, e na tela l[ogica, renderer)
+// A tela principal (dividida na tela física, Window, renderer e na tela lógica, alvo)
 SDL_Window *screen;
 SDL_Renderer *renderer;
+SDL_Texture *alvo;
 // O vetor com os sprite sets
 C2D_SpriteSet sprites[C2D_MAX_SPRITESET];
 // Finalmente, o vetor com as fontes
@@ -217,9 +218,9 @@ bool C2D_Inicia(const unsigned int largura, const unsigned int altura, const c2d
     // Escolhe os flags para janela e tela cheia
     Uint32 flags = 0;
     if(modoVideo == C2D_TELA_CHEIA)
-        flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+        flags |= SDL_WINDOW_FULLSCREEN_DESKTOP  ;
     else if(modoVideo == C2D_JANELA)
-        flags |= SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL;
+        flags |= SDL_WINDOW_RESIZABLE;
     else
         return false;
     // Cria a janela principal (física)
@@ -231,10 +232,14 @@ bool C2D_Inicia(const unsigned int largura, const unsigned int altura, const c2d
     // Desabilita o cursor do mouse
     SDL_ShowCursor(SDL_DISABLE);
     // Inicializa o renderer com a tela lógica (onde fazemos os desenhos)
-	renderer = SDL_CreateRenderer(screen, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	renderer = SDL_CreateRenderer(screen, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
 	if(suaviza)
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "");
 	SDL_RenderSetLogicalSize(renderer, largura, altura);
+	// Cria a textura alvo
+	alvo = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, largura, altura);
+	// O próximo desenho vai ser na textura alvo
+	SDL_SetRenderTarget(renderer, alvo);
     // Inicializa o sistema de áudio
 	Mix_Init( MIX_INIT_OGG);
 	if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024)==-1) {
@@ -263,6 +268,8 @@ bool C2D_Inicia(const unsigned int largura, const unsigned int altura, const c2d
     }
     else
         printf("Não conseguiu criar o arquivo do mapeamento dos gamepads.\n");
+    // Finalmente, desabilita o screen saver
+    SDL_DisableScreenSaver();
     return true;
 }
 
@@ -322,6 +329,11 @@ void C2D_Encerra()
 //
 void C2D_Sincroniza(const Uint8 fps)
 {
+    // Tira a textura alvo
+    SDL_SetRenderTarget(renderer, 0);
+    SDL_RenderClear(renderer);
+    // Desenha o alvo na tela
+    SDL_RenderCopy(renderer, alvo, 0, 0);
     // Inicializa e pega o tempo atual (só faz isso a primeira vez)
     static Uint32 tempoAnterior=0;
 	// Verifica se o parâmetro é válido
@@ -342,6 +354,8 @@ void C2D_Sincroniza(const Uint8 fps)
     for(unsigned int i=0; i<C2D_MAX_TEXTOS;i++)
         if(textos[i].textura!=0)
             textos[i].framesAtras++;
+    // Enfim, volta a usar o alvo para desenho
+    SDL_SetRenderTarget(renderer, alvo);
 }
 
 // Função para limpar a tela
