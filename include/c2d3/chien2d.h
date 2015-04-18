@@ -41,7 +41,9 @@ typedef enum {C2D_JANELA, C2D_TELA_CHEIA} c2d_tipo_tela_t;
 typedef enum {C2D_FLIP_NENHUM, C2D_FLIP_HORIZONTAL, C2D_FLIP_VERTICAL, C2D_FLIP_AMBOS} c2d_flip;
 
 // Constanes para sincronização
-typedef enum {C2D_FPS_PADRAO = 60, C2D_FPS_MINIMO = 1, C2D_FPS_MAXIMO = 255} c2d_fps;
+typedef enum {C2D_FPS_MINIMO = 1, C2D_FPS_PADRAO = 60, C2D_FPS_MAXIMO = 255} c2d_fps;
+
+typedef enum { C2D_BLEND_NENHUM, C2D_BLEND_ALPHA, C2D_BLEND_ADITIVO, C2D_BLEND_MODULACAO_COR} c2d_blend;
 
 // Constantes de teclado
 typedef enum {
@@ -66,6 +68,10 @@ typedef enum {
 typedef enum { C2D_GAMEPAD0, C2D_GAMEPAD1, C2D_GAMEPAD2, C2D_GAMEPAD3, C2D_GAMEPAD4, C2D_GAMEPAD5, C2D_GAMEPAD6, C2D_GAMEPAD7, C2D_GAMEPAD8, C2D_MAX_GAMEPADS } c2d_gamepads;
 
 typedef enum {C2D_GLEIXOX, C2D_GLEIXOY, C2D_GREIXOX, C2D_GREIXOY, C2D_GLTRIGGER, C2D_GRTRIGGER, C2D_GMAX_EIXOS} c2d_eixosgamepad;
+
+// Constantes do alinhamento de texto
+typedef enum {C2D_TEXTO_ESQUERDA, C2D_TEXTO_DIREITA, C2D_TEXTO_CENTRALIZADO} c2d_alinhamento_texto;
+
 
 //     A estrutura C2D_SpriteSet possui campos relacionados aos sprites no sistema.
 //
@@ -188,6 +194,23 @@ unsigned int C2D_CarregaSpriteSet(const char *arquivo, const unsigned int largur
 // Troca as propriedades do spriteset (centro para rotação e bounding box). Por default, o centro é normalizado e o bounding box é o sprite inteiro
 bool C2D_AlteraPropriedadesDoSprite(const unsigned int id, const unsigned int xcentro, const unsigned int ycentro, const unsigned int bbX, const unsigned int bbY,
                                     const unsigned int bbLargura, const unsigned int bbAltura);
+
+// Altera o alpha do sprite
+void C2D_AlteraAlphaDoSprite(const unsigned int id, const Uint8 alpha);
+// restaura o alpha do sprite
+void C2D_RestauraAlphaDoSprite(const unsigned int id);
+
+// Altera o blend do sprite
+void C2D_AlteraBlendDoSprite(const unsigned int id, const int modo);
+// restaura o blend original do sprite
+void C2D_RestauraBlendDoSprite(const unsigned int id);
+
+// Altera o alpha do sprite
+void C2D_AlteraCorDoSprite(const unsigned int id, const Uint8 r, const Uint8 g, const Uint8 b);
+// restaura o alpha do sprite
+void C2D_RestauraCorDoSprite(const unsigned int id);
+
+
 // Remove um sprite set da memória
 void C2D_RemoveSpriteSet(const unsigned int id);
 

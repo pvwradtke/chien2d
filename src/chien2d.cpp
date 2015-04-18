@@ -18,7 +18,7 @@ Copyright 2015, Paulo Vinicius Wolski Radtke (pvwradtke@gmail.com)
 #include <assert.h>
 #include <c2d3/chien2d.h>
 
-typedef unsigned int C2D_MapaEventoSDL[2];
+typedef unsigned int C2D_MapaParaSDL[2];
 
 // A função externa para iniciar o módulo de áudio
 void CA_Inicia();
@@ -56,7 +56,7 @@ static C2D_Gamepad gamepads[C2D_MAX_GAMEPADS] = {0};
 static C2D_Texto textos[C2D_MAX_TEXTOS] = {0};
 
 // Mapeamento das teclas da SDL para as teclas da C2D
-static C2D_MapaEventoSDL mapaTeclas[C2D_MAX_TECLAS-1]={
+static C2D_MapaParaSDL mapaTeclas[C2D_MAX_TECLAS-1]={
     {C2D_TCIMA, SDLK_UP}, {C2D_TBAIXO, SDLK_DOWN}, {C2D_TDIREITA, SDLK_RIGHT}, {C2D_TESQUERDA, SDLK_LEFT},
     {C2D_TESC, SDLK_ESCAPE}, {C2D_TF1, SDLK_F1}, {C2D_TF2, SDLK_F2}, {C2D_TF3, SDLK_F3}, {C2D_TF4, SDLK_F4}, {C2D_TF5, SDLK_F5}, {C2D_TF6, SDLK_F6},
     {C2D_TF7, SDLK_F7}, {C2D_TF8, SDLK_F8}, {C2D_TF9, SDLK_F9}, {C2D_TF10, SDLK_F10}, {C2D_TF11, SDLK_F11}, {C2D_TF12, SDLK_F12},
@@ -72,12 +72,12 @@ static C2D_MapaEventoSDL mapaTeclas[C2D_MAX_TECLAS-1]={
 };
 
 // Mapeamento dos botões do mouse da SDL para os botões da C2D
-static C2D_MapaEventoSDL mapaBotoesMouse[C2D_MAX_MBOTOES]={
+static C2D_MapaParaSDL mapaBotoesMouse[C2D_MAX_MBOTOES]={
     {C2D_MESQUERDO, SDL_BUTTON_LEFT}, {C2D_MDIREITO, SDL_BUTTON_RIGHT}, {C2D_MMEIO, SDL_BUTTON_MIDDLE}
 };
 
 // Mapeamento dos botões do gamepad (inclusive direcional) para os botões do gamepad da C2D
-static C2D_MapaEventoSDL mapaBotoesGamepad[C2D_GMAX_BOTOES] = {
+static C2D_MapaParaSDL mapaBotoesGamepad[C2D_GMAX_BOTOES] = {
     {C2D_GBOTAO_A, SDL_CONTROLLER_BUTTON_A}, {C2D_GBOTAO_B, SDL_CONTROLLER_BUTTON_B}, {C2D_GBOTAO_X, SDL_CONTROLLER_BUTTON_X},
     {C2D_GBOTAO_Y, SDL_CONTROLLER_BUTTON_Y}, {C2D_GBOTAO_L, SDL_CONTROLLER_BUTTON_LEFTSHOULDER}, {C2D_GBOTAO_R, SDL_CONTROLLER_BUTTON_RIGHTSHOULDER},
     {C2D_GBOTAO_START, SDL_CONTROLLER_BUTTON_START}, {C2D_GBOTAO_LS, SDL_CONTROLLER_BUTTON_LEFTSTICK}, {C2D_GBOTAO_RS, SDL_CONTROLLER_BUTTON_RIGHTSTICK},
@@ -86,7 +86,7 @@ static C2D_MapaEventoSDL mapaBotoesGamepad[C2D_GMAX_BOTOES] = {
 };
 
 // Mapeamento dos eixos dos botões
-static C2D_MapaEventoSDL mapaEixosGamepad[C2D_GMAX_EIXOS] = {
+static C2D_MapaParaSDL mapaEixosGamepad[C2D_GMAX_EIXOS] = {
     {C2D_GLEIXOX, SDL_CONTROLLER_AXIS_LEFTX}, {C2D_GLEIXOY, SDL_CONTROLLER_AXIS_LEFTY}, {C2D_GREIXOX, SDL_CONTROLLER_AXIS_RIGHTX},
     {C2D_GREIXOY, SDL_CONTROLLER_AXIS_RIGHTY}, {C2D_GLTRIGGER, SDL_CONTROLLER_AXIS_TRIGGERLEFT}, {C2D_GRTRIGGER, SDL_CONTROLLER_AXIS_TRIGGERRIGHT}
 };
@@ -496,6 +496,112 @@ bool C2D_AlteraPropriedadesDoSprite(const unsigned int id, const unsigned int xc
         return false;
 }
 
+// Altera o alpha do sprite
+//
+// Data: 18/04/2015
+//
+void C2D_AlteraAlphaDoSprite(const unsigned int id, const Uint8 alpha)
+{
+    // O identificador é válido?
+    if(id > C2D_MAX_SPRITESET || id == 0)
+        return;
+    unsigned int idx = id-1; // O índice verdadeiro dentro do vetor
+    // Altera o blend
+    if(sprites[idx].textura)
+        SDL_SetTextureAlphaMod(sprites[idx].textura, alpha);
+}
+
+// restaura o alpha do sprite
+//
+// Data: 18/04/2015
+//
+void C2D_RestauraAlphaDoSprite(const unsigned int id)
+{
+    // O identificador é válido?
+    if(id > C2D_MAX_SPRITESET || id == 0)
+        return;
+    unsigned int idx = id-1; // O índice verdadeiro dentro do vetor
+    // Altera o blend
+    if(sprites[idx].textura)
+        SDL_SetTextureAlphaMod(sprites[idx].textura, 255);
+}
+
+// Altera o blend do sprite
+//
+// Data: 18/04/2015
+//
+void C2D_AlteraBlendDoSprite(const unsigned int id, const int modo)
+{
+    // O identificador é válido?
+    if(id > C2D_MAX_SPRITESET || id == 0)
+        return;
+    unsigned int idx = id-1; // O índice verdadeiro dentro do vetor
+    // Altera o blend
+    if(sprites[idx].textura)
+    {
+        switch(modo)
+        {
+        case C2D_BLEND_NENHUM:
+            SDL_SetTextureBlendMode(sprites[idx].textura, SDL_BLENDMODE_NONE);
+            break;
+        case C2D_BLEND_ALPHA:
+            SDL_SetTextureBlendMode(sprites[idx].textura, SDL_BLENDMODE_BLEND);
+            break;
+        case C2D_BLEND_ADITIVO:
+            SDL_SetTextureBlendMode(sprites[idx].textura, SDL_BLENDMODE_ADD);
+            break;
+        case C2D_BLEND_MODULACAO_COR:
+            SDL_SetTextureBlendMode(sprites[idx].textura, SDL_BLENDMODE_MOD);
+            break;
+        }
+    }
+}
+
+// restaura o blend original do sprite
+//
+// Data: 18/04/2015
+//
+void C2D_RestauraBlendDoSprite(const unsigned int id)
+{
+    // O identificador é válido?
+    if(id > C2D_MAX_SPRITESET || id == 0)
+        return;
+    unsigned int idx = id-1; // O índice verdadeiro dentro do vetor
+    // Altera o blend
+    if(sprites[idx].textura)
+        SDL_SetTextureBlendMode(sprites[idx].textura, SDL_BLENDMODE_NONE);
+}
+
+// Altera a cor do sprite
+//
+// Data: 18/04/2015
+//
+void C2D_AlteraCorDoSprite(const unsigned int id, const Uint8 r, const Uint8 g, const Uint8 b)
+{
+    // O identificador é válido?
+    if(id > C2D_MAX_SPRITESET || id == 0)
+        return;
+    unsigned int idx = id-1; // O índice verdadeiro dentro do vetor
+    // Altera o blend
+    if(sprites[idx].textura)
+        SDL_SetTextureColorMod(sprites[idx].textura, r, g, b);
+}
+
+// restaura a cor do sprite
+//
+// Data: 18/04/2015
+//
+void C2D_RestauraCorDoSprite(const unsigned int id)
+{
+    // O identificador é válido?
+    if(id > C2D_MAX_SPRITESET || id == 0)
+        return;
+    unsigned int idx = id-1; // O índice verdadeiro dentro do vetor
+    // Altera o blend
+    if(sprites[idx].textura)
+        SDL_SetTextureColorMod(sprites[idx].textura, 255, 255, 255);
+}
+
 // Remove um sprite set da memória
 //
 // Data: 25/01/2015
@@ -686,7 +792,7 @@ inline const int C2D_EncontraGamepadIDJoystick(const unsigned int id)
 //
 // Data: 15/92/1015
 //
-inline const int C2D_AchaMapaSDL(const C2D_MapaEventoSDL* mapa, const unsigned int sdl, const int tamanho)
+inline const int C2D_AchaMapaSDL(const C2D_MapaParaSDL* mapa, const unsigned int sdl, const int tamanho)
 {
     for(int i=0;i<tamanho;i++)
         if(mapa[i][1] == sdl)
@@ -1120,8 +1226,17 @@ void C2D_DesenhaTexto(const unsigned int idFonte, const int x, const int y, cons
     // Desenha a textura no renderer
     if(textos[idxTexto].textura != 0)
     {
-        dest.x = x-textos[idxTexto].xdesl;
-        dest.y = y-textos[idxTexto].ydesl;
+        dest.x = x;
+        dest.y = y;
+        switch(alinhamento)
+        {
+        case C2D_TEXTO_DIREITA:
+            dest.x-=textos[idxTexto].largura;
+            break;
+        case C2D_TEXTO_CENTRALIZADO:
+            dest.x-=textos[idxTexto].largura/2;
+            break;
+        }
         dest.w = textos[idxTexto].largura;
         dest.h = textos[idxTexto].altura;
         SDL_RenderCopy(renderer, textos[idxTexto].textura, 0, &dest);
