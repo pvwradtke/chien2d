@@ -49,7 +49,7 @@
 		</Build>
 		<Unit filename="include/c2d3/chien2d.h" />
 		<Unit filename="include/c2d3/chienaudio.h" />
-		<Unit filename="main.cpp" />
+		<Unit filename="main_distorce.cpp" />
 		<Unit filename="src/chien2d.cpp" />
 		<Unit filename="src/chienaudio.cpp" />
 		<Extensions>

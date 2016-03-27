@@ -219,6 +219,10 @@ bool C2D_DesenhaSprite(const unsigned int id, const unsigned int indice, const i
 
 // Função para desenhar um sprite com efeitos básicos
 bool C2D_DesenhaSpriteEspecial(const unsigned int id, const unsigned int indice, const int x, const int y, const c2d_flip flip, const double escalax, const double escalay, const double angulo);
+
+// Função para desenhar um sprite por partes. Desenha a partir da posição xref,yref um quadrado larg x alt
+bool C2D_DesenhaParteSprite(const unsigned int id, const unsigned int indice, const int x, const int y, const int refx, const int refy, const int larg, const int alt);
+
 /*
 // Função para verificar a colisão entre sprites
 bool C2D2_ColidiuSprites(const unsigned int id1, const unsigned int indice1, const int x1, const int y1,

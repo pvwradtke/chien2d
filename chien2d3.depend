@@ -30,7 +30,7 @@
 	<c2d3/chien2d.h>
 	<c2d3/chienaudio.h>
 
-1429334324 /home/paulo/repositories/chien2d/include/c2d3/chien2d.h
+1458963525 /home/paulo/repositories/chien2d/include/c2d3/chien2d.h
 	<SDL2/SDL.h>
 	<SDL2/SDL_image.h>
 	<SDL2/SDL_mixer.h>
@@ -40,7 +40,7 @@
 1429326915 /home/paulo/repositories/chien2d/include/c2d3/chienaudio.h
 	<SDL2/SDL_mixer.h>
 
-1447732650 source:/home/paulo/repositories/chien2d/src/chien2d.cpp
+1458964848 source:/home/paulo/repositories/chien2d/src/chien2d.cpp
 	<math.h>
 	<assert.h>
 	<c2d3/chien2d.h>
@@ -48,6 +48,12 @@
 1429326916 source:/home/paulo/repositories/chien2d/src/chienaudio.cpp
 	<stdio.h>
 	<string.h>
+	<c2d3/chien2d.h>
+	<c2d3/chienaudio.h>
+
+1458966171 source:/home/paulo/repositories/chien2d/main_distorce.cpp
+	<stdio.h>
+	<math.h>
 	<c2d3/chien2d.h>
 	<c2d3/chienaudio.h>
 

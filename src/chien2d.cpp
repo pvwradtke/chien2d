@@ -695,7 +695,6 @@ bool C2D_DesenhaSprite(const unsigned int id, const unsigned int indice, const i
     destino.h = sprites[idx].spAltura;
     SDL_RenderCopy(renderer, sprites[idx].textura, &clip, &destino);
 	return true;
-
 }
 
 // Função para desenhar um sprite com efeitos básicos
@@ -747,6 +746,48 @@ bool C2D_DesenhaSpriteEspecial(const unsigned int id, const unsigned int indice,
     SDL_RenderCopyEx(renderer, sprites[idx].textura, &clip, &destino, angulo, &centro, sdlflip);
 	return true;
 }
+
+
+// Função para desenhar um sprite por partes. Desenha a partir da posição xref,yref um quadrado larg x alt
+//
+// Data: 25/03/2016
+//
+bool C2D_DesenhaParteSprite(const unsigned int id, const unsigned int indice, const int x, const int y, const int refx, const int refy, const int larg, const int alt)
+{
+    static SDL_Rect clip, destino;
+
+	// O id é válido?
+    if(id == 0)
+        return false;
+    if(id > C2D_MAX_SPRITESET)
+        return false;
+    int idx = id-1;
+    // O sprite existe mesmo, mesmo?
+    if(sprites[idx].textura==0 || sprites[idx].apelido[0]==0)
+            return false;
+    // O índice é válido?
+    if(indice >= (unsigned int)(sprites[idx].matrizX * sprites[idx].matrizY) || sprites[idx].textura==0)
+        return false;
+    // Calcula a região dentro do spriteset
+    clip.x = (indice%sprites[idx].matrizX)*sprites[idx].spLargura + refx;
+    clip.y = (indice/sprites[idx].matrizX)*sprites[idx].spAltura + refy;
+    if(refx+larg < sprites[idx].spLargura)
+        clip.w = larg;
+    else
+        clip.w = sprites[idx].spLargura-refx;
+    if(refy+alt < sprites[idx].spAltura)
+        clip.h = alt;
+    else
+        clip.h = sprites[idx].spAltura;
+    // Calcula o destino na tela
+    destino.x = x;
+    destino.y = y;
+    destino.w = clip.w;
+    destino.h = clip.h;
+    SDL_RenderCopy(renderer, sprites[idx].textura, &clip, &destino);
+	return true;
+}
+
 
 
 // Função para recuperar o tempo do sistema
