@@ -61,5 +61,5 @@ int main(int argc, char **argv)
         C2D_Encerra();
     }
     else
-        printf("Erro ao inicializar a Chien2D\n");
+        printf("Erro ao inicializar a Chien2D - saindo!\n");
 }
